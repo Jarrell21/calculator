@@ -34,7 +34,7 @@ let sNumArray = [0];
 firstNum.textContent = fNumArray;
 displayEquation.appendChild(firstNum);
 
-let answer;
+let answer = 0;
 
 // Event listener for all the buttons in the calculator
 allButtons.forEach(btn => btn.addEventListener('click', buttonFunc));
@@ -106,19 +106,19 @@ function percentBtnFunc(num){
         return;
     }
     if(button == addBtn) {
-        operator.textContent = '+'; 
+        operator.textContent = ' + '; 
         displayEquation.appendChild(operator);
     }
     else if(button == subtractBtn) {
-        operator.textContent  = '-'; 
+        operator.textContent  = ' - '; 
         displayEquation.appendChild(operator);
     }
     else if(button == multiplyBtn) {
-        operator.textContent = 'x'; 
+        operator.textContent = ' x '; 
         displayEquation.appendChild(operator);
     }
     else if(button == divideBtn) {
-        operator.textContent = '/'; 
+        operator.textContent = ' / '; 
         displayEquation.appendChild(operator);
     }
     
@@ -131,18 +131,18 @@ function equalFunc(){
         displayEquation.lastChild == firstNum){
         return;
     }
-    const fNum = parseInt(fNumArray.join(''));
-    const sNum = parseInt(sNumArray.join(''));
+    const fNum = parseFloat(fNumArray.join(''));
+    const sNum = parseFloat(sNumArray.join(''));
     operate(fNum, sNum);
 }
 
 // Point button function. 
 // Checks if the 'point' is already in the equation before adding into it
 function pointFunc(){
-    if(fNumArray.includes('.')){
-        return;
-    }
     if(displayEquation.lastChild === firstNum){
+        if(fNumArray.includes('.')){
+            return;
+        }
         if(fNumArray[0] == 0 ||
             fNumArray.length == 0){
             fNumArray[0] = ['0.'];
@@ -152,7 +152,10 @@ function pointFunc(){
             firstNum.textContent = fNumArray.join('');
         }
     }
-    else if(displayEquation.lastChild = operator){
+    else if(displayEquation.lastChild === secondNum){
+        if(sNumArray.includes('.')){
+            return;
+        }
         if(sNumArray[0] == '' ||
             sNumArray.length == 0){
             sNumArray[0] = ['0.'];
@@ -205,29 +208,42 @@ function numFunc(num){
 // This function manipulates the dom that displays the 
 // equation from the corresponding operator
 function operate(num1, num2){
-    if(operator.textContent === '+'){
+    if(operator.textContent === ' + '){
         answer = add(num1, num2);
     }
-    else if(operator.textContent === '-') {
+    else if(operator.textContent === ' - ') {
         answer = subtract(num1, num2);
         
     }
-    else if (operator.textContent === 'x') {
+    else if (operator.textContent === ' x ') {
         answer = multiply(num1, num2);
         
     }
-    else if (operator.textContent === '/') {
+    else if (operator.textContent === ' / ') {
         answer = divide(num1, num2);
-        
     }
-    displayValue.textContent = firstNum.textContent + 
-    ' ' + operator.textContent + ' ' + secondNum.textContent + ' = ' + answer;
-    displayEquation.textContent = answer;
+
+    const twoDecPlacesAns = +answer.toFixed(2);
+    const ansToStr = answer.toString();
+
+    if(ansToStr.includes('.')){
+        displayValue.textContent = firstNum.textContent + 
+        ' ' + operator.textContent + ' ' + secondNum.textContent + ' = ' + twoDecPlacesAns;
+        displayEquation.textContent = twoDecPlacesAns;
+        firstNum.textContent =  twoDecPlacesAns;
+    }
+    else{
+        displayValue.textContent = firstNum.textContent + 
+        ' ' + operator.textContent + ' ' + secondNum.textContent + ' = ' + answer;
+        displayEquation.textContent = answer;
+        firstNum.textContent =  answer;
+    }
+
     fNumArray = [answer];
-    firstNum.textContent =  answer;
     sNumArray = [];
 }
 
+console.log(typeof answer);
 // The following functions is where all the math happens
 function add(num1, num2){
     return num1 + num2;
