@@ -38,21 +38,21 @@ main {
 }
 
 .screen {
+  height: 130px;
   font-size: 2.5em;
   padding: 10px;
   background-color: white;
   border: solid burlywood 3px;
   border-radius: 10px;
-  height: 130px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   align-items: flex-end;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .display-value {
   opacity: 40%;
+  text-align: end;
 }
 
 .display-equation > p {
@@ -80,9 +80,15 @@ main {
 
 .calculator-btns > button:hover {
   cursor: pointer;
-  background-color: white;
+  background-color: rgb(209, 206, 206);
+  transform: scale(1.01);
 }
 
 #clear-btn {
   grid-column: 1 / 3;
+  background-color: rgb(255, 128, 128);
+}
+
+#clear-btn:hover {
+  background-color: rgb(192, 82, 82);
 }
