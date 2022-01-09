@@ -36,9 +36,11 @@ displayEquation.appendChild(firstNum);
 
 let answer = 0;
 
-// Event listener for all the buttons in the calculator
+// On click event listener for all the buttons in the calculator
 allButtons.forEach(btn => btn.addEventListener('click', buttonFunc));
 
+// On keydown event listener for the number and operator buttons 
+window.addEventListener('keydown', buttonFuncKey);
 
 // Function for when a button is clicked
 function buttonFunc(e){
@@ -63,6 +65,29 @@ function buttonFunc(e){
         case num8Btn: numFunc(8); break;
         case num9Btn: numFunc(9); break;
         default: alert('not yet added');
+    }
+}
+
+// Function for when a key is pressed
+function buttonFuncKey(e){
+    switch(e.keyCode){
+        case 8: eraseFunc(); break;
+        case 111: operatorBtnFunc(divideBtn); break;
+        case 106: operatorBtnFunc(multiplyBtn); break;
+        case 109: case 189: operatorBtnFunc(subtractBtn); break;
+        case 107: operatorBtnFunc(addBtn); break;
+        case 13: case 187: equalFunc(); break;
+        case 190: case 110: pointFunc(); break;
+        case 48: case 96: numFunc(0); break;
+        case 49: case 97: numFunc(1); break;
+        case 50: case 98: numFunc(2); break;
+        case 51: case 99: numFunc(3); break;
+        case 52: case 100: numFunc(4); break;
+        case 53: case 101: numFunc(5); break;
+        case 54: case 102: numFunc(6); break;
+        case 55: case 103: numFunc(7); break;
+        case 56: case 104: numFunc(8); break;
+        case 57: case 105: numFunc(9); break;
     }
 }
 
@@ -95,10 +120,6 @@ function eraseFunc(){
         fNumArray.pop();
         firstNum.textContent = fNumArray.join('');
     }
-}
-
-function percentBtnFunc(num){
-    return num / 100;
 }
 
 // The function for all the number buttons
@@ -162,6 +183,27 @@ function pointFunc(){
     }
 }
 
+// Percent button function that divides the current number by 100
+function percentBtnFunc(){
+    
+    const fNum = parseFloat(fNumArray.join(''));
+    const sNum = parseFloat(sNumArray.join(''));
+    
+    let numPercent;
+
+    if(displayEquation.lastChild == firstNum){
+        numPercent = fNum / 100;
+        fNumArray = [numPercent];
+        firstNum.textContent = fNumArray;
+    }
+    else if(displayEquation.lastChild == secondNum){
+        numPercent = sNum / 100;
+        sNumArray = [numPercent];
+        secondNum.textContent = sNumArray;
+    }
+    
+}
+
 // Operator button function that
 // displays the correct operation depending on the button clicked
  function operatorBtnFunc(button){
@@ -171,6 +213,7 @@ function pointFunc(){
     if(firstNum.textContent === ''){
         return;
     }
+    
     if(button == addBtn) {
         operator.textContent = ' + ';
     }
@@ -229,7 +272,7 @@ function operate(num1, num2){
     const displayValueChild = document.createElement('div');
     displayValueChild.textContent = firstNum.textContent + 
     ' ' + operator.textContent + ' ' + secondNum.textContent + ' = ' + answer;
-    displayValue.appendChild(displayValueChild);
+    displayValue.prepend(displayValueChild);
     displayEquation.textContent = '';
     fNumArray = [answer];
     firstNum.textContent =  fNumArray;
