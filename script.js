@@ -78,6 +78,9 @@ function clearFunc(){
 
 // Erase button function that erase each element from the 'screen'
 function eraseFunc(){
+    if(displayValue.textContent !== '' && displayEquation.lastChild == firstNum){
+        return;
+    }
     if (displayEquation.lastChild === secondNum){
         sNumArray.pop();
         secondNum.textContent = sNumArray.join('');
@@ -100,6 +103,9 @@ function percentBtnFunc(num){
 
 // The function for all the number buttons
 function numFunc(num){
+    if(displayValue.textContent !== '' && displayEquation.lastChild == firstNum){
+        return;
+    }
     if(displayEquation.lastChild === firstNum){
         if(fNumArray[0] === 0 && fNumArray[1] !==  '.'){
             fNumArray.pop();
@@ -112,7 +118,6 @@ function numFunc(num){
         
         firstNum.textContent = fNumArray.join('');
     }
-
     else {
         if(sNumArray[0] === 0 && sNumArray[1] !==  '.'){
             sNumArray.pop();
@@ -143,7 +148,6 @@ function pointFunc(){
         fNumArray.push('.');
         firstNum.textContent = fNumArray.join('');
     }
-
     else {
         if(sNumArray.includes('.')){
             return;
@@ -161,8 +165,10 @@ function pointFunc(){
 // Operator button function that
 // displays the correct operation depending on the button clicked
  function operatorBtnFunc(button){
-    if(displayEquation.lastChild == secondNum ||
-        firstNum.textContent === ''){
+    if(displayEquation.lastChild == secondNum){
+        equalFunc();
+    }
+    if(firstNum.textContent === ''){
         return;
     }
     if(button == addBtn) {
@@ -172,10 +178,10 @@ function pointFunc(){
         operator.textContent  = ' - '; 
     }
     else if(button == multiplyBtn) {
-        operator.textContent = ' x '; 
+        operator.textContent = ' \xD7 '; 
     }
     else if(button == divideBtn) {
-        operator.textContent = ' / '; 
+        operator.textContent = ' \xF7 '; 
     }
     displayEquation.appendChild(operator);
  }
@@ -200,12 +206,17 @@ function operate(num1, num2){
         answer = subtract(num1, num2);
         
     }
-    else if (operator.textContent === ' x ') {
+    else if (operator.textContent === ' \xD7 ') {
         answer = multiply(num1, num2);
         
     }
-    else if (operator.textContent === ' / ') {
+    else if (operator.textContent === ' \xF7 ') {
         answer = divide(num1, num2);
+        if(num2 === 0){
+            alert('You cant divide by zero!');
+            clearFunc();
+            return;
+        }
     }
 
     const twoDecPlacesAns = +answer.toFixed(2); // limits the decimal places into 2
@@ -213,19 +224,16 @@ function operate(num1, num2){
 
     // Checks if the string-converted answer is a decimal number
     if(ansToStr.includes('.')){
-        displayValue.textContent = firstNum.textContent + 
-        ' ' + operator.textContent + ' ' + secondNum.textContent + ' = ' + twoDecPlacesAns;
-        displayEquation.textContent = twoDecPlacesAns;
-        firstNum.textContent =  twoDecPlacesAns;
+        answer = twoDecPlacesAns;
     }
-    else{
-        displayValue.textContent = firstNum.textContent + 
-        ' ' + operator.textContent + ' ' + secondNum.textContent + ' = ' + answer;
-        displayEquation.textContent = answer;
-        firstNum.textContent =  answer;
-    }
-
+    const displayValueChild = document.createElement('div');
+    displayValueChild.textContent = firstNum.textContent + 
+    ' ' + operator.textContent + ' ' + secondNum.textContent + ' = ' + answer;
+    displayValue.appendChild(displayValueChild);
+    displayEquation.textContent = '';
     fNumArray = [answer];
+    firstNum.textContent =  fNumArray;
+    displayEquation.appendChild(firstNum);
     sNumArray = [];
 }
 
