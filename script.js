@@ -193,12 +193,12 @@ function percentBtnFunc(){
 
     if(displayEquation.lastChild == firstNum){
         numPercent = fNum / 100;
-        fNumArray = [numPercent];
+        fNumArray = [+numPercent.toFixed(4)];
         firstNum.textContent = fNumArray;
     }
     else if(displayEquation.lastChild == secondNum){
         numPercent = sNum / 100;
-        sNumArray = [numPercent];
+        sNumArray = [+numPercent.toFixed(4)];
         secondNum.textContent = sNumArray;
     }
     
@@ -261,12 +261,12 @@ function operate(num1, num2){
         }
     }
 
-    const twoDecPlacesAns = +answer.toFixed(2); // limits the decimal places into 2
+    const maxDecPlacesAns = +answer.toFixed(4); // limits the decimal places into 4
     const ansToStr = answer.toString(); // convert the answer into a string
 
     // Checks if the string-converted answer is a decimal number
     if(ansToStr.includes('.')){
-        answer = twoDecPlacesAns;
+        answer = maxDecPlacesAns;
     }
     const displayValueChild = document.createElement('div');
     displayValueChild.textContent = firstNum.textContent + 
