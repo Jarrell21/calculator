@@ -257,7 +257,6 @@ function operate(num1, num2){
         answer = divide(num1, num2);
         if(num2 === 0){
             alert('You cant divide by zero!');
-            clearFunc();
             return;
         }
     }
