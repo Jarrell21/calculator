@@ -46,17 +46,16 @@ main {
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  overflow-y: auto;
-}
-
-.display-value {
-  opacity: 40%;
+  overflow: auto;
   text-align: end;
 }
 
 .display-equation > p {
   display: inline;
+}
+
+.display-value {
+  opacity: 40%;
 }
 
 .calculator-btns {
