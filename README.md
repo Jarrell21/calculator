@@ -1,5 +1,7 @@
 # calculator
 
+A functional calculator built with HTML, CSS, and JavaScript
+
 ### Main tools
 
 - HTML
